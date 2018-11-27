@@ -3,6 +3,10 @@ const RELATION_TYPE = "Ref";
 
 let graphLib = require("spinalgraph");
 const {
+  SpinalEndpoint
+} = require("spinal-models-bmsNetwork");
+
+const {
   AbstractElement
 } = require("spinal-models-building-elements");
 
@@ -11,17 +15,29 @@ let dashboardConf = {
     return "geographic" + type.charAt(0).toUpperCase() + type.slice(1);
   },
   createStandardDashBoard(context, name, type, attributes) {
-    let element = new AbstractElement(name);
 
-    attributes.forEach(attrName => {
-      if (!element[attrName]) {
-        element.add_attr(attrName, "");
-      }
+    let abs = new graphLib.SpinalNode(name, dashboardConf.formatType(
+        type),
+      new AbstractElement(name));
+
+    context.addChildInContext(abs, RELATION_NAME, RELATION_TYPE,
+      context);
+
+    attributes.forEach(attr => {
+
+
+      let element = new SpinalEndpoint(attr.name, "SpinalEndpoint", attr.value,
+        attr.unit,
+        typeof attr.value)
+
+      let child = new graphLib.SpinalNode(attr.name, dashboardConf.formatType(
+        type), element);
+
+      abs.addChildInContext(child, "hasEndpoint", RELATION_TYPE, context);
+
     });
 
-    let child = new graphLib.SpinalNode(name, dashboardConf.formatType(type),
-      element);
-    context.addChildInContext(child, RELATION_NAME, RELATION_TYPE, context);
+
   }
 };
 

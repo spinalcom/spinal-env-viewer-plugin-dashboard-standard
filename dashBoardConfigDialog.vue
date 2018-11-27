@@ -10,7 +10,12 @@
           <md-input v-model="inputValue"></md-input>
         </md-field>
 
+        <br>
+        <span class="md-subheading">Choose the type </span>
+        <br>
+
         <div>
+
           <md-radio class="md-primary"
                     v-model="absType"
                     v-for="(type,index) in types"
@@ -18,7 +23,7 @@
                     :value="type">{{type}}</md-radio>
         </div>
 
-        <div class="md-layout">
+        <!-- <div class="md-layout">
           <md-field class="md-layout-item md-size-85">
             <label>Add attribute</label>
             <md-input v-model="attr"></md-input>
@@ -30,11 +35,22 @@
           </md-button>
         </div>
 
-        <div>
+         <div>
 
           <md-chip md-deletable
                    v-for="(att,index) in attributes"
                    :key="index">{{att}}</md-chip>
+        </div> -->
+        <br>
+        <span class="md-subheading">Choose </span>
+        <br>
+
+        <div class="md-layout">
+
+          <md-checkbox class="md-layout-item md-size-45 md-primary"
+                       v-for="(choice,index) in choices"
+                       :key="index"
+                       v-model="choice.checked">{{choice.name}}</md-checkbox>
         </div>
 
       </md-dialog-content>
@@ -50,21 +66,24 @@
 
 <script>
 let utilities = require("./utilities");
+import listChoices from "./choice";
 
 export default {
   name: "dialogComponent",
   props: ["onFinised"],
   data() {
+    this.types = ["building","floor","zone","room"];
+
     return {
-        title : "",
-        inputValue: "",
-        context: null,
-        absType: "room",
-        types: ["building","floor","zone","room"],
-        attr : "",
-        attributes: [],
-        create : true,
-      showDialog: true
+      title : "",
+      inputValue: "",
+      context: null,
+      absType: "room",
+      // attr : "",
+      // attributes: [],
+      create : true,
+      showDialog: true,
+      choices : Object.assign([],listChoices)
     };
   },
   methods: {
@@ -75,13 +94,17 @@ export default {
         this.inputValue = option.selectedNode ? option.selectedNode.info.name.get() : "";
         this.create = option.toCreate;
         this.absType = option.selectedNode ? this.getType(option.selectedNode.info.type.get()) : "room";
+        // this.getAttributes(option.selectedNode).then(x => {
+        //   console.log(x);
+        //   this.attributes = x;
+        // });
     },
 
     removed(option) {
 
       if(option.closeResult && this.create && option.inputValue.trim().length > 0) {
-        utilities.createStandardDashBoard(this.context,option.inputValue.trim(),option.type, option.attributes);
-      } else if(option.closeResult) {
+        utilities.createStandardDashBoard(this.context,option.inputValue.trim(),option.type, this.choices.filter(el => el.checked));
+      } else if(option.closeResult && option.inputValue.trim().length > 0) {
         console.log(this.node);
       }
 
@@ -89,7 +112,7 @@ export default {
     },
     closeDialog(closeResult) {
       if (typeof this.onFinised === "function")
-        this.onFinised({ closeResult, inputValue: this.inputValue, attributes : this.attributes , type : this.absType });
+        this.onFinised({ closeResult, inputValue: this.inputValue, type : this.absType });
     },
     addAttributes() {
       this.attr = this.attr.trim();
@@ -104,9 +127,13 @@ export default {
     getType(type) {
       return type.replace("geographic","").toLowerCase();
     },
-    getAttributes() {
-      return;
-    }
+    // async getAttributes(node) {
+    //    let children = await node.getChildren(["hasEndpoint"]);
+
+    //    children.forEach(x => {
+
+    //    });
+    // }
   }
 };
 </script>
