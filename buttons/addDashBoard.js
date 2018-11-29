@@ -6,7 +6,9 @@ const {
   spinalPanelManagerService
 } = require("spinal-env-viewer-panel-manager-service");
 
-const DASHBOARD_CONTEXT_TYPE = "dashboardContext";
+import {
+  DASHBOARD_CONTEXT_TYPE
+} from "../const";
 
 class AddDashboard extends SpinalContextApp {
   constructor() {
@@ -41,7 +43,8 @@ class AddDashboard extends SpinalContextApp {
         option.selectedNode : undefined,
       toCreate: true
     }
-    if (option.context.info.type.get() == DASHBOARD_CONTEXT_TYPE && option.context
+    if (option.context.info.type.get() == DASHBOARD_CONTEXT_TYPE &&
+      option.context
       ._server_id !== option.selectedNode._server_id) {
       params.title = "Config DashBoard";
       params.toCreate = false;

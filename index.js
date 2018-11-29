@@ -1,6 +1,10 @@
 const sidebarName = "GraphManagerSideBar";
-const DASHBOARD_CONTEXT = "Dashboard Standard";
-const DASHBOARD_CONTEXT_TYPE = "dashboardContext";
+
+import {
+  DASHBOARD_CONTEXT,
+  DASHBOARD_CONTEXT_TYPE
+} from "./const";
+
 
 let graphLib = require("spinalgraph");
 const {

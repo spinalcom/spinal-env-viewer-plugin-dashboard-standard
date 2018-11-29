@@ -15,7 +15,8 @@
     "spinal-env-viewer-panel-manager-service": "git+https://github.com/spinalcom/spinal-env-viewer-panel-manager-service.git",
     "spinal-env-viewer-panel-manager-service_spinalforgeextention": "git+https://github.com/spinalcom/spinal-env-viewer-panel-manager-service_spinalforgeextention.git",
     "spinal-models-building-elements": "git+https://github.com/spinalcom/spinal-models-building-elements.git",
-    "spinal-models-bmsNetwork": "git+https://github.com/spinalcom/spinal-models-bmsNetwork.git"
+    "spinal-models-bmsNetwork": "git+https://github.com/spinalcom/spinal-models-bmsNetwork.git",
+    "spinal-env-viewer-context-geographic-service": "git+https://github.com/spinalcom/spinal-env-viewer-context-geographic-service.git"
   },
   "browserify": {
     "transform": [
