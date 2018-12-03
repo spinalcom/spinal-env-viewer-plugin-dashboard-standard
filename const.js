@@ -4,6 +4,7 @@ import ContextGeographicService from "spinal-env-viewer-context-geographic-servi
 const DASHBOARD_CONTEXT = "Dashboard Standard";
 const DASHBOARD_CONTEXT_TYPE = "dashboardContext";
 const RELATION_NAME = "hasDashBoard";
+const ENDPOINT_RELATION_NAME = "hasEndpoint";
 
 
 
@@ -23,6 +24,10 @@ const GEOGRAPHIC_TPES = [{
   {
     name: "Room",
     type: ContextGeographicService.constants.ROOM_TYPE
+  },
+  {
+    name: "Equipment",
+    type: ContextGeographicService.constants.EQUIPMENT_TYPE
   }
 
 ]
@@ -33,5 +38,6 @@ export {
   DASHBOARD_CONTEXT,
   DASHBOARD_CONTEXT_TYPE,
   RELATION_NAME,
-  GEOGRAPHIC_TPES
+  GEOGRAPHIC_TPES,
+  ENDPOINT_RELATION_NAME
 }

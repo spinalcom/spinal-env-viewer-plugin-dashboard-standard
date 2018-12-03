@@ -13,16 +13,21 @@ const {
 const {
   spinalContextMenuService
 } = require("spinal-env-viewer-context-menu-service");
-const {
-  SpinalMountExtention
-} = require("spinal-env-viewer-panel-manager-service");
+
 
 
 import AddDashboard from "./buttons/addDashBoard";
-import vue from "vue";
-import dialogComponent from "./dashBoardConfigDialog.vue";
+import OpenDasboardPanel from "./buttons/openDasboardPanel";
+import "./registerDialog";
 
-/***** Cette partie crée le context du dashboard standard s'il n'existe pas   ********************/
+
+
+/*
+  Cette partie crée le context du dashboard standard s'il n'existe pas
+
+  A modifier pour ajouter un bouton de creation de context
+ */
+
 window.spinal.spinalSystem.getModel().then(el => {
   if (el.graph) {
     el.graph.getContext(DASHBOARD_CONTEXT).then(context => {
@@ -36,11 +41,9 @@ window.spinal.spinalSystem.getModel().then(el => {
     });
   }
 });
-/*** * Fin de la partie */
 
-SpinalMountExtention.mount({
-  name: "dashBoardConfigDialog",
-  vueMountComponent: vue.extend(dialogComponent),
-  parentContainer: document.body
-});
+
+
+
 spinalContextMenuService.registerApp(sidebarName, new AddDashboard());
+spinalContextMenuService.registerApp(sidebarName, new OpenDasboardPanel());

@@ -7,7 +7,7 @@ const {
   AbstractElement
 } = require("spinal-models-building-elements");
 
-let dashboardConf = {
+let dashboardService = {
 
   createStandardDashBoard(context, name, type, attributes) {
     let abstract = new AbstractElement(name);
@@ -34,6 +34,8 @@ let dashboardConf = {
       context
     );
   }
-};
+}
 
-module.exports = dashboardConf;
+export {
+  dashboardService
+};

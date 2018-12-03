@@ -47,9 +47,9 @@
 </template>
 
 <script>
-let utilities = require("./utilities");
-import listChoices from "./choice";
-import { GEOGRAPHIC_TPES } from "./const";
+import { dashboardService } from "../utilities";
+import listChoices from "../choice";
+import { GEOGRAPHIC_TPES } from "../const";
 
 export default {
   name: "dialogComponent",
@@ -87,7 +87,7 @@ export default {
         this.create &&
         option.inputValue.trim().length > 0
       ) {
-        utilities.createStandardDashBoard(
+        dashboardService.createStandardDashBoard(
           this.context,
           option.inputValue.trim(),
           option.type,
