@@ -23,7 +23,7 @@ module.exports = [
   }, {
     checked: false,
     name: "Occupation",
-    unit: undefined,
+    unit: "-",
     value: false,
     dataType: "boolean"
   }, {
@@ -36,7 +36,7 @@ module.exports = [
   {
     checked: false,
     name: "Alarm",
-    unit: undefined,
+    unit: "-",
     value: false,
     dataType: "boolean"
   }
