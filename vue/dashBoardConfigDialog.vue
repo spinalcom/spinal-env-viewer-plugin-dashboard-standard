@@ -32,6 +32,7 @@
           <md-checkbox class="md-layout-item md-size-45 md-primary"
                        v-for="(choice,index) in choices"
                        :key="index"
+                       :disabled="choice.disabled"
                        v-model="choice.checked">{{choice.name}}</md-checkbox>
         </div>
 
@@ -61,7 +62,7 @@ export default {
       title: "",
       inputValue: "",
       context: null,
-      absType: "",
+      absType: GEOGRAPHIC_TPES[0].type, // par default le premier element de la liste
       create: true,
       showDialog: true,
       choices: Object.assign([], listChoices)
@@ -79,6 +80,7 @@ export default {
       this.absType = option.selectedNode
         ? option.selectedNode.info.type.get()
         : this.absType;
+      this.SelectCases(option.selectedNode);
     },
 
     removed(option) {
@@ -106,6 +108,16 @@ export default {
           inputValue: this.inputValue,
           type: this.absType
         });
+    },
+    async SelectCases(selectedNode) {
+      let endpointsNode = (await selectedNode.getElement()).sensor;
+
+      for (let i = 0; i < endpointsNode.length; i++) {
+        const element = endpointsNode[i];
+        var checkbox = this.choices.find(el => el.name == element.name.get());
+        checkbox.checked = true;
+        checkbox.disabled = true;
+      }
     }
   }
 };
