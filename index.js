@@ -1,15 +1,11 @@
 const sidebarName = "GraphManagerSideBar";
 
 import {
-  DASHBOARD_CONTEXT,
-  DASHBOARD_CONTEXT_TYPE
-} from "./const";
+  dashboardVaribles,
+  dashboardService
+} from "spinal-env-viewer-dashboard-standard-service";
 
 
-let graphLib = require("spinalgraph");
-const {
-  AbstractElement
-} = require("spinal-models-building-elements");
 const {
   spinalContextMenuService
 } = require("spinal-env-viewer-context-menu-service");
@@ -18,6 +14,10 @@ const {
 
 import AddDashboard from "./buttons/addDashBoard";
 import OpenDasboardPanel from "./buttons/openDasboardPanel";
+import LinkWithDashBoard from "./buttons/linkWithDashBoard";
+import LinkAutoWithDashboard from './buttons/linkAutoWithDashboard';
+
+
 import "./registerDialog";
 
 
@@ -28,22 +28,12 @@ import "./registerDialog";
   A modifier pour ajouter un bouton de creation de context
  */
 
-window.spinal.spinalSystem.getModel().then(el => {
-  if (el.graph) {
-    el.graph.getContext(DASHBOARD_CONTEXT).then(context => {
-      if (context) return;
-      let newContext = new graphLib.SpinalContext(
-        DASHBOARD_CONTEXT,
-        DASHBOARD_CONTEXT_TYPE,
-        new AbstractElement(DASHBOARD_CONTEXT)
-      );
-      el.graph.addContext(newContext);
-    });
-  }
-});
+dashboardService.createStandardDashBoardContext(dashboardVaribles.DASHBOARD_CONTEXT);
 
 
 
 
 spinalContextMenuService.registerApp(sidebarName, new AddDashboard());
 spinalContextMenuService.registerApp(sidebarName, new OpenDasboardPanel());
+spinalContextMenuService.registerApp(sidebarName, new LinkWithDashBoard());
+spinalContextMenuService.registerApp(sidebarName, new LinkAutoWithDashboard());

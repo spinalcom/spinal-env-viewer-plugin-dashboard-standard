@@ -7,8 +7,8 @@ const {
 } = require("spinal-env-viewer-panel-manager-service");
 
 import {
-  DASHBOARD_CONTEXT_TYPE
-} from "../const";
+  dashboardVaribles
+} from "spinal-env-viewer-dashboard-standard-service";
 
 class AddDashboard extends SpinalContextApp {
   constructor() {
@@ -21,12 +21,12 @@ class AddDashboard extends SpinalContextApp {
   }
 
   isShown(option) {
-    if (option.selectedNode.info.type.get() == DASHBOARD_CONTEXT_TYPE) {
+    if (option.selectedNode.info.type.get() == dashboardVaribles.DASHBOARD_CONTEXT_TYPE) {
       this.label = "create dashboard";
       this.description = "create dashboard";
       this.buttonCfg.icon = "add";
       return Promise.resolve(true);
-    } else if (option.context.info.type.get() == DASHBOARD_CONTEXT_TYPE) {
+    } else if (option.context.info.type.get() == dashboardVaribles.DASHBOARD_CONTEXT_TYPE) {
       this.label = "setting dashboard";
       this.description = "setting dashboard";
       this.buttonCfg.icon = "settings";
@@ -43,7 +43,7 @@ class AddDashboard extends SpinalContextApp {
         option.selectedNode : undefined,
       toCreate: true
     }
-    if (option.context.info.type.get() == DASHBOARD_CONTEXT_TYPE &&
+    if (option.context.info.type.get() == dashboardVaribles.DASHBOARD_CONTEXT_TYPE &&
       option.context
       ._server_id !== option.selectedNode._server_id) {
       params.title = "Config DashBoard";

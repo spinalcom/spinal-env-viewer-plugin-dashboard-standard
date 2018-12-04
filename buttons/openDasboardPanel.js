@@ -8,8 +8,8 @@ const {
 
 import * as graphLib from "spinalgraph";
 import {
-  ENDPOINT_RELATION_NAME
-} from "../const"
+  dashboardVaribles
+} from "spinal-env-viewer-dashboard-standard-service";
 
 
 class OpenDashboardPanel extends SpinalContextApp {
@@ -23,7 +23,8 @@ class OpenDashboardPanel extends SpinalContextApp {
   }
 
   isShown(option) {
-    if (option.selectedNode.hasRelation(ENDPOINT_RELATION_NAME, graphLib.SPINAL_RELATION_TYPE)) {
+    if (option.selectedNode.hasRelation(dashboardVaribles.ENDPOINT_RELATION_NAME,
+        graphLib.SPINAL_RELATION_TYPE)) {
       return Promise.resolve(true);
     }
     return Promise.resolve(-1);

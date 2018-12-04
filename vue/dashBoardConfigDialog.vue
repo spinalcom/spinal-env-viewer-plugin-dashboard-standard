@@ -48,21 +48,23 @@
 </template>
 
 <script>
-import { dashboardService } from "../utilities";
 import listChoices from "../choice";
-import { GEOGRAPHIC_TPES } from "../const";
+import {
+  dashboardVaribles,
+  dashboardService
+} from "spinal-env-viewer-dashboard-standard-service";
 
 export default {
   name: "dialogComponent",
   props: ["onFinised"],
   data() {
-    this.types = GEOGRAPHIC_TPES;
+    this.types = dashboardVaribles.GEOGRAPHIC_TPES;
 
     return {
       title: "",
       inputValue: "",
       context: null,
-      absType: GEOGRAPHIC_TPES[0].type, // par default le premier element de la liste
+      absType: dashboardVaribles.GEOGRAPHIC_TPES[0].type, // par default le premier element de la liste
       create: true,
       showDialog: true,
       choices: Object.assign([], listChoices)
@@ -110,13 +112,15 @@ export default {
         });
     },
     async SelectCases(selectedNode) {
-      let endpointsNode = (await selectedNode.getElement()).sensor;
+      if (selectedNode) {
+        let endpointsNode = (await selectedNode.getElement()).sensor;
 
-      for (let i = 0; i < endpointsNode.length; i++) {
-        const element = endpointsNode[i];
-        var checkbox = this.choices.find(el => el.name == element.name.get());
-        checkbox.checked = true;
-        checkbox.disabled = true;
+        for (let i = 0; i < endpointsNode.length; i++) {
+          const element = endpointsNode[i];
+          var checkbox = this.choices.find(el => el.name == element.name.get());
+          checkbox.checked = true;
+          checkbox.disabled = true;
+        }
       }
     }
   }
