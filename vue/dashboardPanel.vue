@@ -13,7 +13,7 @@
 import endpointComponent from "./endpointComponent.vue";
 const {
   ENDPOINT_RELATION_NAME
-} = require("spinal-env-viewer-dashboard-standard-service").dashboardVaribles;
+} = require("spinal-env-viewer-dashboard-standard-service").dashboardVariables;
 
 export default {
   name: "dashboard-panel",

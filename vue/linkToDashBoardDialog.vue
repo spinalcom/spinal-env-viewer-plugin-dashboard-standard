@@ -12,11 +12,11 @@
             This element already has a dashboard, the old one will be removed !
           </div>
 
-          <md-radio class="md-layout-item md-size-30 md-primary"
+          <!-- <md-radio class="md-layout-item md-size-30 md-primary"
                     v-for="(choice,index) in choices"
                     :key="index"
                     v-model="radio"
-                    :value="choice.name">{{choice.name}}</md-radio>
+                    :value="choice.id">{{choice.name}}</md-radio> -->
 
           <div class="choicesEmpty"
                v-if="choices.length == 0">
@@ -36,11 +36,7 @@
 </template>
 
 <script>
-import * as graphLib from "spinalgraph";
-import {
-  dashboardService,
-  dashboardVaribles
-} from "spinal-env-viewer-dashboard-standard-service";
+import { dashboardService } from "spinal-env-viewer-dashboard-standard-service";
 
 export default {
   name: "linkToDashBoardDialog",
@@ -52,26 +48,32 @@ export default {
       showDialog: true,
       choices: [],
       radio: "",
-      hasDash: false
+      hasDash: false,
+      dashboards: null
     };
   },
   methods: {
     opened(option) {
       this.context = option.context;
       this.selectedNode = option.selectedNode;
-      this.hasDash = dashboardService.hasDashBoard(option.selectedNode);
-      dashboardService.getDashboardByType(option.selectedNode).then(el => {
-        this.choices = el;
-      });
+      this.hasDash = dashboardService.hasDashBoard(
+        option.selectedNode.id.get()
+      );
+
+      this.dashboards = dashboardService.getAllDashboardContext();
+
+      dashboardService
+        .getDashboardByType(
+          option.context.id.get(),
+          option.selectedNode.id.get()
+        )
+        .then(el => {
+          this.choices = el;
+        });
     },
     removed(option) {
       if (option.closeResult) {
-        dashboardService.createRelation(
-          this.selectedNode,
-          dashboardVaribles.ENDPOINT_RELATION_NAME,
-          graphLib.SPINAL_RELATION_TYPE,
-          this.choices.find(el => el.name == this.radio).node
-        );
+        dashboardService.createRelation(this.selectedNode.id.get(), this.radio);
       }
       this.showDialog = false;
     },

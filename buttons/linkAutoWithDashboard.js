@@ -21,13 +21,13 @@ class LinkAutoWithDashboard extends SpinalContextApp {
   }
 
   isShown(option) {
-    if (option.context.info.type.get() === CONTEXT_TYPE)
+    if (option.context.type.get() === CONTEXT_TYPE)
       return Promise.resolve(true);
     return Promise.resolve(-1);
   }
 
   action(option) {
-
+    spinalPanelManagerService.openPanel('linkAutoWithDashboardDialog', option)
   }
 }
 

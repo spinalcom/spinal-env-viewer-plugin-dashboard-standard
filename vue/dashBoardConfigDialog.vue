@@ -50,7 +50,7 @@
 <script>
 import listChoices from "../choice";
 import {
-  dashboardVaribles,
+  dashboardVariables,
   dashboardService
 } from "spinal-env-viewer-dashboard-standard-service";
 
@@ -58,13 +58,14 @@ export default {
   name: "dialogComponent",
   props: ["onFinised"],
   data() {
-    this.types = dashboardVaribles.GEOGRAPHIC_TPES;
+    this.types = dashboardVariables.GEOGRAPHIC_TPES;
 
     return {
       title: "",
       inputValue: "",
       context: null,
-      absType: dashboardVaribles.GEOGRAPHIC_TPES[0].type, // par default le premier element de la liste
+      selectedNode: null,
+      absType: dashboardVariables.GEOGRAPHIC_TPES[0].type, // par default le premier element de la liste
       create: true,
       showDialog: true,
       choices: Object.assign([], listChoices)
@@ -73,14 +74,14 @@ export default {
   methods: {
     opened(option) {
       this.title = option.title;
-      this.node = option.selectedNode;
+      this.selectedNode = option.selectedNode;
       this.context = option.context;
       this.inputValue = option.selectedNode
-        ? option.selectedNode.info.name.get()
+        ? option.selectedNode.name.get()
         : "";
       this.create = option.toCreate;
       this.absType = option.selectedNode
-        ? option.selectedNode.info.type.get()
+        ? option.selectedNode.type.get()
         : this.absType;
       this.SelectCases(option.selectedNode);
     },
@@ -92,13 +93,13 @@ export default {
         option.inputValue.trim().length > 0
       ) {
         dashboardService.createStandardDashBoard(
-          this.context,
+          this.context.id.get(),
           option.inputValue.trim(),
           option.type,
           this.choices.filter(el => el.checked)
         );
       } else if (option.closeResult && option.inputValue.trim().length > 0) {
-        console.log(this.node);
+        console.log(this.selectedNode);
       }
 
       this.showDialog = false;
@@ -112,12 +113,18 @@ export default {
         });
     },
     async SelectCases(selectedNode) {
-      if (selectedNode) {
-        let endpointsNode = (await selectedNode.getElement()).sensor;
+      let checkbox = this.choices.filter(el => el.disabled || el.checked);
+      checkbox.forEach(el => {
+        el.checked = false;
+        el.disabled = false;
+      });
 
-        for (let i = 0; i < endpointsNode.length; i++) {
-          const element = endpointsNode[i];
-          var checkbox = this.choices.find(el => el.name == element.name.get());
+      if (selectedNode) {
+        let endpointsNode = await selectedNode.element.load();
+
+        for (let i = 0; i < endpointsNode.sensor.length; i++) {
+          const element = endpointsNode.sensor[i];
+          let checkbox = this.choices.find(el => el.name == element.name.get());
           checkbox.checked = true;
           checkbox.disabled = true;
         }

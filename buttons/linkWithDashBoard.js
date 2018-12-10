@@ -22,8 +22,7 @@ class LinkWithDashBoard extends SpinalContextApp {
   }
 
   isShown(option) {
-    if (option.context.info.type.get() === CONTEXT_TYPE && option.selectedNode
-      .info
+    if (option.context.type.get() === CONTEXT_TYPE && option.selectedNode
       .type
       .get() !== CONTEXT_TYPE)
       return Promise.resolve(true);
