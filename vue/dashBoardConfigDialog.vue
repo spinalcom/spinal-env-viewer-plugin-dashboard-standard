@@ -58,14 +58,14 @@ export default {
   name: "dialogComponent",
   props: ["onFinised"],
   data() {
-    this.types = dashboardVariables.GEOGRAPHIC_TPES;
+    this.types = dashboardVariables.GEOGRAPHIC_TYPES;
 
     return {
       title: "",
       inputValue: "",
       context: null,
       selectedNode: null,
-      absType: dashboardVariables.GEOGRAPHIC_TPES[0].type, // par default le premier element de la liste
+      absType: dashboardVariables.GEOGRAPHIC_TYPES[0].type, // par default le premier element de la liste
       create: true,
       showDialog: true,
       choices: Object.assign([], listChoices)

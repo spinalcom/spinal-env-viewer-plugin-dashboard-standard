@@ -1,7 +1,13 @@
-let find = async function(argNode, relationNames, predicate) {
+import {
+  SpinalGraphService
+} from "spinal-env-viewer-graph-service";
+
+let find = async function(id, relationNames, predicate) {
   if (typeof predicate !== "function") {
     throw new Error("predicate must be a function");
   }
+
+  let argNode = SpinalGraphService.getRealNode(id);
 
   let seen = new Set([argNode]);
   let promises = [];

@@ -1,68 +1,66 @@
 <template>
-  <div class="dialogContainer">
-    <md-dialog :md-active.sync="showDialog"
+  <div>
+    <md-dialog class="dialogContainer"
+               :md-active.sync="showDialog"
                @md-closed="closeDialog(false)">
-      <md-dialog-title>Link</md-dialog-title>
+      <md-dialog-title>Link Elements To Dashboard</md-dialog-title>
       <md-dialog-content>
 
-        <md-tabs md-sync-route
-                 v-if="selectedNode">
-          <md-tab v-for="(tab,index) in children"
-                  :key="index"
-                  :id="tab.type"
-                  :md-label="tab.name">
+        <!-- <div class="md-layout md-gutter">
+          <div class="md-layout-item md-size-50">
+            <div class="md-layout-item">
+              <md-field>
+                <label for="font">Font</label>
+                <md-select v-model="elementSelected"
+                           name="font"
+                           id="font">
+                  <md-option v-for="(element,index) in children"
+                             :key="index"
+                             :value="element.type">{{element.name}}</md-option>
+                </md-select>
+              </md-field>
+            </div>
+          </div>
 
-            <md-app>
-              <md-app-toolbar class="md-transparent"
-                              md-elevation="0">
-                <span class="md-title">Dashboard</span>
-              </md-app-toolbar>
+          <div class="md-layout-item md-size-50">
 
-              <md-app-drawer md-permanent="full">
-                <md-toolbar class="md-transparent"
-                            md-elevation="0">
-                  <span class="md-title">Elements</span>
-                </md-toolbar>
+          </div>
+        </div> -->
 
-                <md-list>
-                  <md-list-item>
-                    <md-radio class="md-primary"
-                              v-model="tab.all"
-                              :value="true">All</md-radio>
-                    <md-radio class="md-primary"
-                              v-model="tab.all"
-                              :value="false">Perso</md-radio>
-                  </md-list-item>
+        <div class="md-layout md-gutter"
+             v-for="(data,index) in allData"
+             :key="index">
 
-                  <md-list-item class="md-primary"
-                                v-for="(el,index) in tab.element"
-                                :key="index">
-                    <md-checkbox class="md-primary"
-                                 v-model="el.checked"
-                                 :disabled="tab.all">{{el.name}}</md-checkbox>
-                  </md-list-item>
+          <div class="md-layout-item md-size-30 title">{{data.name}}</div>
 
-                </md-list>
-              </md-app-drawer>
+          <div class="md-layout-item md-size-30">
+            <md-field>
+              <md-select v-model="data.contextSelected"
+                         :name="data.type"
+                         id="context"
+                         @md-closed="getContextDashboard(data)">
+                <md-option value="none">None</md-option>
+                <md-option v-for="(element,index) in dashboards"
+                           :key="index"
+                           :value="element.id.get()">{{element.name.get()}}</md-option>
+              </md-select>
+            </md-field>
+          </div>
 
-              <md-app-content>
-                <div class="md-layout">
+          <div class="md-layout-item md-size-30"
+               v-if="data.contextSelected != 'none'">
+            <md-field>
+              <md-select v-model="data.dasboardSelected"
+                         :name="dash"
+                         id="dash">
+                <md-option v-for="(dash,index) in data.dashboards"
+                           :key="index"
+                           :value="dash.id">{{dash.name}}</md-option>
+              </md-select>
+            </md-field>
+          </div>
 
-                  <md-radio class="md-layout-item md-size-30 md-primary"
-                            v-for="(choice,index) in tab.dashboard"
-                            :key="index"
-                            v-model="dashboardSelected"
-                            :value="choice.name">{{choice.name}}</md-radio>
-                  <div v-if="tab.dashboard.length === 0">
-                    No dashboard for this type
-                  </div>
-
-                </div>
-              </md-app-content>
-            </md-app>
-
-          </md-tab>
-        </md-tabs>
+        </div>
 
       </md-dialog-content>
       <md-dialog-actions>
@@ -81,6 +79,7 @@ import {
   dashboardVariables,
   dashboardService
 } from "spinal-env-viewer-dashboard-standard-service";
+
 import { find } from "../find";
 
 const relations = ["hasContext"].concat(
@@ -95,77 +94,81 @@ export default {
       selectedNode: null,
       context: null,
       showDialog: true,
-      children: [],
-      dashboardSelected: null
+      allData: [],
+      dashboards: []
     };
   },
   methods: {
-    opened(option) {
+    async opened(option) {
       this.selectedNode = option.selectedNode;
-      this.context = option.getContext;
-      this.children = this.getAllChildren(this.selectedNode);
+      this.allData = this.getChildrenElement(this.selectedNode.type.get());
+      this.dashboards = await dashboardService.getAllDashboardContext();
     },
     removed(option) {
+      let items = this.getItemToLink();
+
+      console.log(items);
+
+      items.forEach(el => {
+        find(this.selectedNode.id.get(), relations, node => {
+          return node.info.type.get() === el.type;
+        }).then(nodes => {
+          console.log("nodes", nodes);
+
+          for (let i = 0; i < nodes.length; i++) {
+            dashboardService.linkToDashboard(
+              nodes[i].info.id.get(),
+              el.dasboardSelected
+            );
+          }
+        });
+      });
+
       this.showDialog = false;
     },
 
     closeDialog(closeResult) {
-      this.getDashboardAndItemSelected();
-
       if (typeof this.onFinised === "function") this.onFinised({ closeResult });
     },
-    getAllChildren(selectedNode) {
+    getChildrenElement(type) {
       let geographicTypesOrder =
         ContextGeographicService.constants.GEOGRAPHIC_TYPES_ORDER;
 
-      let children = dashboardVariables.GEOGRAPHIC_TPES.slice(
-        geographicTypesOrder.indexOf(selectedNode.info.type.get())
+      let children = dashboardVariables.GEOGRAPHIC_TYPES.slice(
+        geographicTypesOrder.indexOf(type)
       );
 
-      let childrenCopy = Object.assign([], children);
-
-      childrenCopy.forEach(async element => {
-        element["all"] = true;
-        element["dashboard"] = await this.getDashboard(
-          this.context,
-          element.type
-        );
-        element["element"] = await this.getNodeByType(
-          this.selectedNode,
-          element.type
-        );
-      });
-      return childrenCopy;
-    },
-    async getDashboard(context, selectedNode) {
-      let d = await dashboardService.getDashboardByType(context, selectedNode);
-      return d;
-    },
-
-    async getNodeByType(selectedNode, type) {
-      let nodes = await find(selectedNode, relations, node => {
-        return node.info.type.get() === type;
+      children.forEach(el => {
+        el["dasboardSelected"] = "none";
+        el["contextSelected"] = "none";
+        el["dashboards"] = [];
       });
 
-      var objs = [];
-
-      for (let node of nodes) {
-        objs.push({ checked: true, name: node.info.name.get(), node: node });
+      return children;
+    },
+    getContextDashboard(data) {
+      if (data.contextSelected !== "none") {
+        dashboardService
+          .getDashboardByType(data.contextSelected, data.type)
+          .then(el => {
+            console.log("el", el);
+            data.dashboards = el;
+          });
+      } else {
+        console.log("condition non execute");
       }
-
-      return objs;
     },
-    getDashboardSelected() {
-      return this.children.dasboard.find(
-        el => el.name === this.dashboardSelected
+    getItemToLink() {
+      return this.allData.filter(
+        el => el.dasboardSelected !== "none" && el.dasboardSelected !== "none"
       );
-    },
-    getDashboardAndItemSelected() {
-      console.log(this.getDashboardSelected());
     }
   }
 };
 </script>
 
-<style scoped>
+<style>
+.md-menu-content {
+  z-index: 110;
+}
 </style>
