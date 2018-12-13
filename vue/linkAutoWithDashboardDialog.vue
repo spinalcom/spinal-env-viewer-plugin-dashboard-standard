@@ -47,17 +47,22 @@
             </md-field>
           </div>
 
-          <div class="md-layout-item md-size-30"
-               v-if="data.contextSelected != 'none'">
-            <md-field>
+          <div class="md-layout-item md-size-30">
+            <md-field v-if="data.contextSelected != 'none' && data.dashboards.length > 0">
               <md-select v-model="data.dasboardSelected"
                          :name="dash"
                          id="dash">
+                <md-option value="none">None</md-option>
                 <md-option v-for="(dash,index) in data.dashboards"
                            :key="index"
-                           :value="dash.id">{{dash.name}}</md-option>
+                           :value="dash.id.get()">{{dash.name.get()}}</md-option>
               </md-select>
             </md-field>
+
+            <md-field v-if="data.contextSelected != 'none' && data.dashboards.length == 0">
+              <span class="md-caption noDashboard">No dashboard for this type</span>
+            </md-field>
+
           </div>
 
         </div>
@@ -146,14 +151,12 @@ export default {
 
       return children;
     },
-    getContextDashboard(data) {
+    async getContextDashboard(data) {
       if (data.contextSelected !== "none") {
-        dashboardService
-          .getDashboardByType(data.contextSelected, data.type)
-          .then(el => {
-            console.log("el", el);
-            data.dashboards = el;
-          });
+        data.dashboards = await dashboardService.getDashboardByType(
+          data.contextSelected,
+          data.type
+        );
       } else {
         console.log("condition non execute");
       }
@@ -168,7 +171,15 @@ export default {
 </script>
 
 <style>
+.dialogContainer {
+  width: calc(60%) !important;
+}
+
 .md-menu-content {
   z-index: 110;
+}
+
+.md-caption.noDashboard {
+  color: red;
 }
 </style>
