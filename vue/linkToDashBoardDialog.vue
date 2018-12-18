@@ -40,7 +40,7 @@
                     v-for="(choice,index) in choices"
                     :key="index"
                     v-model="radio"
-                    :value="choice.id">{{choice.name}}</md-radio>
+                    :value="choice.id.get()">{{choice.name.get()}}</md-radio>
 
           <div class="choicesEmpty"
                v-if="choices.length == 0 && dashboardContextSelected.length !== 0">
