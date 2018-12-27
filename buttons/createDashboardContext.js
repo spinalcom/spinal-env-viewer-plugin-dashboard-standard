@@ -17,11 +17,11 @@ class CreateDashboardContext extends SpinalContextApp {
     });
   }
 
-  isShown(option) {
+  isShown() {
     return Promise.resolve(true);
   }
 
-  action(option) {
+  action() {
     spinalPanelManagerService.openPanel("dashboardContextCreation", {});
   }
 }
