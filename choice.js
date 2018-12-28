@@ -6,7 +6,7 @@ module.exports = [
     name: "Temperature",
     unit: "°C",
     value: 0,
-    dataType: "double"
+    dataType: "Double"
   },
   {
     checked: false,
@@ -14,7 +14,7 @@ module.exports = [
     name: "Hygrometry",
     unit: "%",
     value: 0,
-    dataType: "double"
+    dataType: "Double"
   },
   {
     checked: false,
@@ -22,21 +22,21 @@ module.exports = [
     name: "Power",
     unit: "W",
     value: 0,
-    dataType: "double"
+    dataType: "Double"
   }, {
     checked: false,
     disabled: false,
     name: "Occupation",
     unit: "-",
     value: false,
-    dataType: "boolean"
+    dataType: "Boolean"
   }, {
     checked: false,
     disabled: false,
     name: "Light",
     unit: "%",
     value: 0,
-    dataType: "double"
+    dataType: "Double"
   },
   {
     checked: false,
@@ -44,7 +44,7 @@ module.exports = [
     name: "Alarm",
     unit: "-",
     value: false,
-    dataType: "boolean"
+    dataType: "Boolean"
   }
 
 ]
