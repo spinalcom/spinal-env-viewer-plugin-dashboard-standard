@@ -13,7 +13,7 @@ import {
 class AddDashboard extends SpinalContextApp {
   constructor() {
     super("create dashboard", "create dashboard", {
-      icon: "add",
+      icon: "table_chart",
       icon_type: "in",
       backgroundColor: "#FF0000",
       fontColor: "#FFFFFF"
@@ -24,7 +24,7 @@ class AddDashboard extends SpinalContextApp {
     if (option.selectedNode.type.get() == dashboardVariables.DASHBOARD_CONTEXT_TYPE) {
       this.label = "create dashboard";
       this.description = "create dashboard";
-      this.buttonCfg.icon = "add";
+      this.buttonCfg.icon = "table_chart";
       return Promise.resolve(true);
     } else if (option.context.type.get() == dashboardVariables.DASHBOARD_CONTEXT_TYPE) {
       this.label = "setting dashboard";

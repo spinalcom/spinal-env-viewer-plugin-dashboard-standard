@@ -10,7 +10,7 @@ const {
 class CreateDashboardContext extends SpinalContextApp {
   constructor() {
     super("create dashboard Context", "create dashboard Context", {
-      icon: "add",
+      icon: "pie_chart",
       icon_type: "in",
       backgroundColor: "#FF0000",
       fontColor: "#FFFFFF"
