@@ -34,14 +34,14 @@ export default {
     };
   },
   methods: {
-    opened(option) {
+    opened() {
       this.inputValue = "";
     },
 
     removed(option) {
       let contextName = this.inputValue.trim();
 
-      if (contextName.length > 0) {
+      if (option.closeResult && contextName.length > 0) {
         let success = dashboardService.createStandardDashBoardContext(
           contextName
         );
