@@ -79,7 +79,6 @@ export default {
   },
   methods: {
     async opened(option) {
-      this.context = option.context;
       this.selectedNode = option.selectedNode;
       this.hasDash = await dashboardService.hasDashBoard(
         option.selectedNode.id.get()
@@ -92,6 +91,7 @@ export default {
     removed(option) {
       if (option.closeResult) {
         dashboardService.linkToDashboard(
+          this.dashboardContextSelected,
           this.selectedNode.id.get(),
           this.radio
         );

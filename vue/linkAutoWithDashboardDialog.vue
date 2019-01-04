@@ -105,6 +105,7 @@ export default {
   },
   methods: {
     async opened(option) {
+      this.context = option.context;
       this.selectedNode = option.selectedNode;
       this.allData = this.getChildrenElement(this.selectedNode.type.get());
       this.dashboards = await dashboardService.getAllDashboardContext();
@@ -112,22 +113,21 @@ export default {
     removed(option) {
       let items = this.getItemToLink();
 
-      console.log(items);
-
-      items.forEach(el => {
-        find(this.selectedNode.id.get(), relations, node => {
-          return node.info.type.get() === el.type;
-        }).then(nodes => {
-          console.log("nodes", nodes);
-
-          for (let i = 0; i < nodes.length; i++) {
-            dashboardService.linkToDashboard(
-              nodes[i].info.id.get(),
-              el.dasboardSelected
-            );
-          }
+      if (option.closeResult) {
+        items.forEach(el => {
+          find(this.selectedNode.id.get(), relations, node => {
+            return node.info.type.get() === el.type;
+          }).then(nodes => {
+            for (let i = 0; i < nodes.length; i++) {
+              dashboardService.linkToDashboard(
+                el.contextSelected,
+                nodes[i].info.id.get(),
+                el.dasboardSelected
+              );
+            }
+          });
         });
-      });
+      }
 
       this.showDialog = false;
     },
@@ -163,7 +163,7 @@ export default {
     },
     getItemToLink() {
       return this.allData.filter(
-        el => el.dasboardSelected !== "none" && el.dasboardSelected !== "none"
+        el => el.contextSelected !== "none" && el.dasboardSelected !== "none"
       );
     }
   }
