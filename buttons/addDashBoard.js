@@ -39,7 +39,7 @@ class AddDashboard extends SpinalContextApp {
     let params = {
       title: "",
       context: option.context,
-      selectedNode: option.context._server_id !== option.selectedNode._server_id ?
+      selectedNode: option.context.id.get() !== option.selectedNode.id.get() ?
         option.selectedNode : undefined,
       toCreate: true
     }

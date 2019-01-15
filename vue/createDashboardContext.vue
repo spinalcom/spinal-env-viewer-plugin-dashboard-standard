@@ -1,23 +1,22 @@
 <template>
-  <div>
-    <md-dialog :md-active.sync="showDialog"
-               @md-closed="closeDialog(false)">
-      <md-dialog-title>Create Dashboard Standard context</md-dialog-title>
-      <md-dialog-content>
-        <md-field>
-          <label>Enter context Name</label>
-          <md-input v-model="inputValue"></md-input>
-        </md-field>
+  <md-dialog :md-active.sync="showDialog"
+             @md-closed="closeDialog(false)">
+    <md-dialog-title>Create Dashboard Standard context</md-dialog-title>
+    <md-dialog-content>
+      <md-field>
+        <label>Enter context Name</label>
+        <md-input v-model="inputValue"></md-input>
+      </md-field>
 
-      </md-dialog-content>
-      <md-dialog-actions>
-        <md-button class="md-primary"
-                   @click="closeDialog(false)">Close</md-button>
-        <md-button class="md-primary"
-                   @click="closeDialog(true)">Save</md-button>
-      </md-dialog-actions>
-    </md-dialog>
-  </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <md-button class="md-primary"
+                 @click="closeDialog(false)">Close</md-button>
+      <md-button class="md-primary"
+                 @click="closeDialog(true)"
+                 :disabled="!(inputValue.trim().length > 0)">Save</md-button>
+    </md-dialog-actions>
+  </md-dialog>
 </template>
 
 <script>

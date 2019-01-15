@@ -3,7 +3,7 @@ import dashBoardConfigDialog from "./vue/dashBoardConfigDialog.vue";
 import linkToDashBoardDialog from './vue/linkToDashBoardDialog.vue';
 import linkAutoWithDashboardDialog from "./vue/linkAutoWithDashboardDialog.vue";
 import createDashboardContextComponent from './vue/createDashboardContext.vue';
-
+import parameterDashboardCalculation from './vue/CalculParams.vue';
 const {
   SpinalMountExtention
 } = require("spinal-env-viewer-panel-manager-service");
@@ -30,6 +30,11 @@ var dialogs = [{
     vueMountComponent: vue.extend(createDashboardContextComponent),
     parentContainer: document.body
   },
+  {
+    name: "dashBoardCalcul",
+    vueMountComponent: vue.extend(parameterDashboardCalculation),
+    parentContainer: document.body
+  }
 ];
 
 for (let index = 0; index < dialogs.length; index++) {

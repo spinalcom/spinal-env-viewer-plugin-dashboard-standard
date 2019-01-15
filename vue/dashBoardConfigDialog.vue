@@ -24,7 +24,7 @@
         </div>
 
         <br>
-        <span class="md-subheading">Choose </span>
+        <span class="md-subheading">check the types of endpoints to add </span>
         <br>
 
         <div class="md-layout">
@@ -41,7 +41,8 @@
         <md-button class="md-primary"
                    @click="closeDialog(false)">Close</md-button>
         <md-button class="md-primary"
-                   @click="closeDialog(true)">Save</md-button>
+                   @click="closeDialog(true)"
+                   :disabled="!formIsValid()">Save</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
@@ -112,23 +113,27 @@ export default {
           type: this.absType
         });
     },
-    async SelectCases(selectedNode) {
-      let checkbox = this.choices.filter(el => el.disabled || el.checked);
-      checkbox.forEach(el => {
-        el.checked = false;
-        el.disabled = false;
-      });
-
+    SelectCases(selectedNode) {
       if (selectedNode) {
-        let endpointsNode = await selectedNode.element.load();
+        selectedNode.element.load().then(endpointElement => {
+          let sensor = endpointElement.sensor.get();
 
-        for (let i = 0; i < endpointsNode.sensor.length; i++) {
-          const element = endpointsNode.sensor[i];
-          let checkbox = this.choices.find(el => el.name == element.name.get());
-          checkbox.checked = true;
-          checkbox.disabled = true;
-        }
+          for (let i = 0; i < this.choices.length; i++) {
+            const element = this.choices[i];
+
+            let checkbox = sensor.find(el => el.name == element.name);
+
+            if (typeof checkbox === "undefined")
+              this.choices[i].checked = false;
+          }
+        });
       }
+    },
+    formIsValid() {
+      let elementChecked = this.choices.filter(el => el.checked).length > 0;
+      let nameValid = this.inputValue && this.inputValue.trim().length > 0;
+
+      return elementChecked && nameValid;
     }
   }
 };
