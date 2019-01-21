@@ -12,11 +12,11 @@ module.exports = [
   {
     checked: true,
     disabled: false,
-    name: "Hygrometry",
+    name: "Hydrometry",
     unit: "%",
     value: 0,
     dataType: "Double",
-    type: "Hygrometry"
+    type: "Hydrometry"
   },
   {
     checked: true,
