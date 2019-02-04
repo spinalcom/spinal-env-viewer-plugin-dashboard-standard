@@ -23,7 +23,9 @@ let find = async function(id, relationNames, predicate) {
     for (let node of currentGen) {
       promises.push(node.getChildren(relationNames));
 
-      if (predicate(node)) {
+      let predicated = await predicate(node);
+
+      if (predicated) {
         found.push(node);
       }
     }
