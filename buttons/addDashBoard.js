@@ -37,20 +37,14 @@ class AddDashboard extends SpinalContextApp {
 
   action(option) {
     let params = {
-      title: "",
+      title: option.context.id.get() !== option.selectedNode.id
+        .get() ?
+        "Config DashBoard" : "Create DashBoard",
       context: option.context,
       selectedNode: option.context.id.get() !== option.selectedNode.id.get() ?
         option.selectedNode : undefined,
-      toCreate: true
-    }
-    if (option.context.type.get() == dashboardVariables.DASHBOARD_CONTEXT_TYPE &&
-      option.context
-      ._server_id !== option.selectedNode._server_id) {
-      params.title = "Config DashBoard";
-      params.toCreate = false;
-    } else {
-      params.title = "Create DashBoard";
-      params.toCreate = true;
+      toCreate: option.context.id.get() !== option.selectedNode.id.get() ?
+        false : true
     }
 
     spinalPanelManagerService.openPanel("dashBoardConfigDialog", params);

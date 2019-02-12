@@ -21,7 +21,7 @@
 
 <script>
 import { dashboardService } from "spinal-env-viewer-dashboard-standard-service";
-import { toasted } from "../toats";
+import { toasted } from "../js/toats";
 
 export default {
   name: "createDashboardContextComponent",

@@ -20,7 +20,8 @@
                     v-model="absType"
                     v-for="(geo,index) in types"
                     :key="index"
-                    :value="geo.type">{{geo.name}}</md-radio>
+                    :value="geo.type"
+                    :disabled="!create">{{geo.name}}</md-radio>
         </div>
 
         <br>
@@ -49,7 +50,7 @@
 </template>
 
 <script>
-import listChoices from "../choice";
+import listChoices from "../js/choice";
 import {
   dashboardVariables,
   dashboardService
@@ -59,7 +60,9 @@ export default {
   name: "dialogComponent",
   props: ["onFinised"],
   data() {
-    this.types = dashboardVariables.GEOGRAPHIC_TYPES;
+    this.types = dashboardVariables.GEOGRAPHIC_TYPES.filter(
+      el => el.name !== "Equipment"
+    );
 
     return {
       title: "",
@@ -81,6 +84,8 @@ export default {
         ? option.selectedNode.name.get()
         : "";
       this.create = option.toCreate;
+      console.log("this.create", this.create);
+
       this.absType = option.selectedNode
         ? option.selectedNode.type.get()
         : this.absType;
@@ -99,8 +104,16 @@ export default {
           option.type,
           this.choices.filter(el => el.checked)
         );
-      } else if (option.closeResult && option.inputValue.trim().length > 0) {
-        console.log(this.selectedNode);
+      } else if (
+        option.closeResult &&
+        option.inputValue.trim().length > 0 &&
+        !this.create
+      ) {
+        // dashboardService.editDashboard(
+        //   this.selectedNode.id.get(),
+        //   option.inputValue.trim(),
+        //   this.choices.filter(el => el.checked)
+        // );
       }
 
       this.showDialog = false;
@@ -114,6 +127,10 @@ export default {
         });
     },
     SelectCases(selectedNode) {
+      this.choices.forEach(element => {
+        element.checked = true;
+      });
+
       if (selectedNode) {
         selectedNode.element.load().then(endpointElement => {
           let sensor = endpointElement.sensor.get();

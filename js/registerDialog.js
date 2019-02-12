@@ -1,10 +1,11 @@
 import vue from "vue";
-import dashBoardConfigDialog from "./vue/dashBoardConfigDialog.vue";
-import linkToDashBoardDialog from './vue/linkToDashBoardDialog.vue';
-import linkAutoWithDashboardDialog from "./vue/linkAutoWithDashboardDialog.vue";
-import createDashboardContextComponent from './vue/createDashboardContext.vue';
-import parameterDashboardCalculation from './vue/CalculParams.vue';
-import globalCalculDialog from "./vue/globalCalcul.vue";
+import dashBoardConfigDialog from "../vue/dashBoardConfigDialog.vue";
+import linkToDashBoardDialog from '../vue/linkToDashBoardDialog.vue';
+import linkAutoWithDashboardDialog from "../vue/linkAutoWithDashboardDialog.vue";
+import createDashboardContextComponent from '../vue/createDashboardContext.vue';
+import parameterDashboardCalculation from '../vue/CalculParams.vue';
+import globalCalculDialog from "../vue/globalCalcul.vue";
+import bimObjectReferenceDialog from "../vue/bimObjectCalculReference.vue";
 
 const {
   SpinalMountExtention
@@ -39,6 +40,11 @@ var dialogs = [{
   }, {
     name: "globalCalculDialog",
     vueMountComponent: vue.extend(globalCalculDialog),
+    parentContainer: document.body
+  },
+  {
+    name: "bimObjectReference",
+    vueMountComponent: vue.extend(bimObjectReferenceDialog),
     parentContainer: document.body
   }
 ];

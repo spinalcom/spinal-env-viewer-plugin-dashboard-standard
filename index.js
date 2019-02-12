@@ -14,7 +14,7 @@ import CreateDashBoardContext from "./buttons/createDashboardContext";
 import CalculateBtn from './buttons/calculateBtn';
 import GlobalCalculateBtn from "./buttons/globalCalculate";
 
-import "./registerDialog";
+import "./js/registerDialog";
 
 
 

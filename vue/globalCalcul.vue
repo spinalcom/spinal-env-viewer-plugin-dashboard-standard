@@ -91,12 +91,12 @@
 </template>
 
 <script>
-import listChoices from "../choice";
+import listChoices from "../js/choice";
 import {
   dashboardVariables,
   dashboardService
 } from "spinal-env-viewer-dashboard-standard-service";
-import { find } from "../find";
+import { find } from "../js/find";
 import geographicService from "spinal-env-viewer-context-geographic-service";
 import { SpinalGraphService } from "spinal-env-viewer-graph-service";
 
@@ -104,7 +104,9 @@ export default {
   name: "globalCalculDialog",
   props: ["onFinised"],
   data() {
-    this.rules = Object.keys(dashboardVariables.CALCULATION_RULES);
+    this.rules = Object.keys(dashboardVariables.CALCULATION_RULES).filter(
+      el => el !== "reference"
+    );
     this.endpointsTypes = Object.assign([], listChoices);
     return {
       node: null,

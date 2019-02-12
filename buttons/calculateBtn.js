@@ -10,6 +10,8 @@ import {
   dashboardService
 } from "spinal-env-viewer-dashboard-standard-service";
 
+import geographicService from 'spinal-env-viewer-context-geographic-service';
+
 class CalculateBtn extends SpinalContextApp {
   constructor() {
     super("Config calculation method", "configure the calculation method", {
@@ -21,6 +23,9 @@ class CalculateBtn extends SpinalContextApp {
   }
 
   isShown(option) {
+    if (option.selectedNode.type.get() === geographicService.constants.EQUIPMENT_TYPE)
+      return Promise.resolve(true);
+
     return dashboardService.hasDashBoard(option.selectedNode.id.get()).then(
       el => {
         if (el) return true;
@@ -30,7 +35,12 @@ class CalculateBtn extends SpinalContextApp {
   }
 
   action(option) {
-    spinalPanelManagerService.openPanel("dashBoardCalcul", option.selectedNode);
+    if (option.selectedNode.type.get() === geographicService.constants.EQUIPMENT_TYPE) {
+      spinalPanelManagerService.openPanel("bimObjectReference", option.selectedNode);
+
+    } else {
+      spinalPanelManagerService.openPanel("dashBoardCalcul", option.selectedNode);
+    }
   }
 }
 

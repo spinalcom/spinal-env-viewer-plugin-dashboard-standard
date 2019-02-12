@@ -85,7 +85,7 @@ import {
   dashboardService
 } from "spinal-env-viewer-dashboard-standard-service";
 
-import { find } from "../find";
+import { find } from "../js/find";
 
 const relations = ["hasContext"].concat(
   ContextGeographicService.constants.GEOGRAPHIC_RELATIONS
@@ -141,6 +141,8 @@ export default {
 
       let children = dashboardVariables.GEOGRAPHIC_TYPES.slice(
         geographicTypesOrder.indexOf(type)
+      ).filter(
+        el => el.type !== ContextGeographicService.constants.EQUIPMENT_TYPE
       );
 
       children.forEach(el => {
@@ -157,8 +159,6 @@ export default {
           data.contextSelected,
           data.type
         );
-      } else {
-        console.log("condition non execute");
       }
     },
     getItemToLink() {
@@ -170,9 +170,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .dialogContainer {
-  width: calc(60%) !important;
+  width: calc(50%) !important;
 }
 
 .md-menu-content {
