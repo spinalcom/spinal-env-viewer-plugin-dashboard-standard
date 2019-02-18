@@ -86,7 +86,7 @@ export default {
       children: [],
       endpointTypeSelected: null,
       ruleSelected: dashboardVariables.CALCULATION_RULES.average,
-      reference: null,
+      reference: "",
       showDialog: true,
       name: "",
       dashEndpoints: [],
@@ -104,14 +104,14 @@ export default {
         element.forEach(el => {
           this.dashEndpoints.push({
             id: el.id.get(),
-            name: el.type.get(),
-            ruleSelected: el.dash_cal_rule
-              ? el.dash_cal_rule.rule.get()
-              : dashboardVariables.CALCULATION_RULES.average,
-            reference:
-              el.dash_cal_rule && el.dash_cal_rule.ref
-                ? el.dash_cal_rule.ref.get()
-                : null
+            name: el.type.get()
+            // ruleSelected: el.dash_cal_rule
+            //   ? el.dash_cal_rule.rule.get()
+            //   : dashboardVariables.CALCULATION_RULES.average,
+            // reference:
+            //   el.dash_cal_rule && el.dash_cal_rule.ref
+            //     ? el.dash_cal_rule.ref.get()
+            //     : null
           });
         });
       });
@@ -120,8 +120,9 @@ export default {
       if (option) {
         if (
           this.ruleSelected !== dashboardVariables.CALCULATION_RULES.reference
-        )
+        ) {
           this.reference = null;
+        }
 
         dashboardService.addCalculationRule(
           this.id,
@@ -162,6 +163,16 @@ export default {
     ruleSelected: function() {
       if (this.ruleSelected === dashboardVariables.CALCULATION_RULES.reference)
         this.getAllChildren();
+    },
+    endpointTypeSelected: function(newValue) {
+      let dashInfo = SpinalGraphService.getInfo(newValue);
+      if (dashInfo.dash_cal_rule) {
+        this.ruleSelected = dashInfo.dash_cal_rule.rule.get();
+        if (dashInfo.dash_cal_rule.ref) {
+          this.reference = dashInfo.dash_cal_rule.ref.get();
+          console.log("this.reference", this.reference);
+        }
+      }
     }
   }
 };
