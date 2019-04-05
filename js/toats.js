@@ -2,7 +2,7 @@ import Vue from "vue";
 import Toasted from "vue-toasted";
 
 
-Vue.use( Toasted );
+Vue.use(Toasted);
 
 
 const option = {
@@ -14,11 +14,11 @@ const option = {
 let toasted = {
 
   success: function(message) {
-    Vue.toasted.success( message, option );
+    Vue.toasted.success(message, option);
   },
 
   error: function(message) {
-    Vue.toasted.error( message, option );
+    Vue.toasted.error(message, option);
   }
 
 };

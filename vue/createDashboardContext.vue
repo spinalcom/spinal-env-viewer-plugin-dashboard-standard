@@ -21,7 +21,7 @@
 
 <script>
 import { dashboardService } from "spinal-env-viewer-dashboard-standard-service";
-import { toasted } from "../js/toats";
+// import { toasted } from "../js/toats";
 
 export default {
   name: "createDashboardContextComponent",
@@ -45,11 +45,11 @@ export default {
           contextName
         );
 
-        if (success) {
-          toasted.success("Context created");
-        } else {
-          toasted.error("error");
-        }
+        // if (success) {
+        // toasted.success("Context created");
+        // } else {
+        // toasted.error("error");
+        // }
       }
       this.showDialog = false;
     },
