@@ -20,11 +20,9 @@ import "./js/registerDialog";
 
 
 
-spinalContextMenuService.registerApp(sidebarName, new AddDashboard());
-spinalContextMenuService.registerApp(sidebarName, new LinkWithDashBoard());
-spinalContextMenuService.registerApp(sidebarName, new LinkAutoWithDashboard());
-spinalContextMenuService.registerApp(sidebarName, new CalculateBtn());
-spinalContextMenuService.registerApp(sidebarName, new GlobalCalculateBtn());
-
-
-spinalContextMenuService.registerApp(HeaderBarName, new CreateDashBoardContext());
+spinalContextMenuService.registerApp(sidebarName, new AddDashboard(),[3]);
+spinalContextMenuService.registerApp(sidebarName, new LinkWithDashBoard(),[3]);
+spinalContextMenuService.registerApp(sidebarName, new LinkAutoWithDashboard(),[3]);
+spinalContextMenuService.registerApp(sidebarName, new CalculateBtn(),[3]);
+spinalContextMenuService.registerApp(sidebarName, new GlobalCalculateBtn(),[3]);
+spinalContextMenuService.registerApp(HeaderBarName, new CreateDashBoardContext(),[3]);
