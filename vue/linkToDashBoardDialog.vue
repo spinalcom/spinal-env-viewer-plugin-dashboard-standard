@@ -158,6 +158,6 @@ export default {
 }
 
 .md-menu-content {
-  z-index: 110;
+  z-index: 110 !important;
 }
 </style>
