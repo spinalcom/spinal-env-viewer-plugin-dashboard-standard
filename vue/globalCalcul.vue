@@ -230,7 +230,7 @@ export default {
   height: calc(50%);
 }
 
-.md-content.md-table-content.md-scrollbar.md-theme-default {
+.globalCalculDialog .md-content.md-table-content.md-scrollbar.md-theme-default {
   height: 200px !important;
 }
 </style>
